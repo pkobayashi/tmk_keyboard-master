@@ -25,10 +25,10 @@ KEYMAP( /* Blue */
 ),
 
 KEYMAP( /* Tab */
-  TRNS, CALC, WHOM, MAIL, MYCM, TRNS, TRNS, TRNS, TRNS, TRNS, PSCR, TRNS,
-  ESC,  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,
-  TRNS, FN4,  FN5,  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,
-  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,       TRNS, MS_L, MS_D, MS_U, MS_R
+  TRNS, CALC, WHOM, MAIL, MYCM,    FN22,    TRNS, TRNS,    TRNS, TRNS, PSCR, TRNS,
+  ESC,  TRNS, TRNS, TRNS, TRNS,    TRNS,    TRNS, TRNS,    TRNS, TRNS, TRNS, TRNS,
+  TRNS, FN4,  FN5,  TRNS, TRNS,    TRNS,    TRNS, TRNS,    TRNS, TRNS, TRNS, TRNS,
+  TRNS, TRNS, TRNS, TRNS, MS_BTN1, MS_BTN3,       MS_BTN2, MS_L, MS_D, MS_U, MS_R
 ),
 };
 
@@ -60,6 +60,7 @@ const action_t PROGMEM fn_actions[] = {
     [19] = ACTION_MODS_KEY(MOD_LSFT, KC_LBRC),
     [20] = ACTION_MODS_KEY(MOD_LSFT, KC_RBRC),
     [21] = ACTION_MODS_KEY(MOD_LSFT, KC_BSLS),
+    [22] = ACTION_MODS_KEY(MOD_LCTL | MOD_LALT, KC_T),
 };
 
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
