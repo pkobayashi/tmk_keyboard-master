@@ -4,20 +4,20 @@
 const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 KEYMAP(
-  ESC,  Q,    W,    E,    R,    T,    Y,    U,    I,    O,    P,    BSPC,
-  FN2,  A,    S,    D,    F,    G,    H,    J,    K,    L,    SCLN, QUOT,
+  FN2,  Q,    W,    E,    R,    T,    Y,    U,    I,    O,    P,    BSPC,
+  ESC,  A,    S,    D,    F,    G,    H,    J,    K,    L,    SCLN, QUOT,
   LSFT, Z,    X,    C,    V,    B,    N,    M,    COMM, DOT,  SLSH, FN3,
-  LCTL, LALT, LGUI, APP,  FN1,  SPC,        FN0,  LEFT, DOWN, UP,   RGHT
+  LCTL, LGUI, LALT, APP,  FN1,  SPC,        FN0,  LEFT, DOWN, UP,   RGHT
 ),
 
-KEYMAP(
+KEYMAP( /* Orange */
   GRV,  1,    2,    3,    4,    5,    6,    7,    8,    9,    0,    DELETE,
   TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, MINS, EQL,  LBRC, RBRC, BSLS,
   TRNS, F11,  F12,  F13,  F14,  F15,  F16,  F17,  F18,  F19,  F20,  TRNS,
   TRNS, TRNS, TRNS, CAPS, TRNS, TRNS,       TRNS, HOME, PGDN, PGUP, END
 ),
 
-KEYMAP(
+KEYMAP( /* Blue */
   FN6,  FN7,  FN8,  FN9,  FN10, FN11, FN12, FN13, FN14, FN15, FN16, DELETE,
   TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, FN17, FN18, FN19, FN20, FN21,
   TRNS, F1,   F2,   F3,   F4,   F5,   F6,   F7,   F8,   F9,   F10,  TRNS,
@@ -25,8 +25,8 @@ KEYMAP(
 ),
 
 KEYMAP( /* Tab */
-  ESC,  CALC, WHOM, MAIL, MYCM, TRNS, TRNS, TRNS, TRNS, TRNS, PSCR, TRNS,
-  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,
+  TRNS, CALC, WHOM, MAIL, MYCM, TRNS, TRNS, TRNS, TRNS, TRNS, PSCR, TRNS,
+  ESC,  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,
   TRNS, FN4,  FN5,  TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,
   TRNS, TRNS, TRNS, TRNS, TRNS, TRNS,       TRNS, MS_L, MS_D, MS_U, MS_R
 ),
