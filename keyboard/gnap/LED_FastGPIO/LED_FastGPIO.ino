@@ -8,7 +8,7 @@ byte pass = 1;
 int fadecount = 1;
 const int fadelimit = 3000;
 const int fadelimitshort = 1000;
-byte mode = 4;
+byte mode = 1;
 byte brightness = 2;
 boolean changemode = 0;
 int rain = 0;
@@ -81,106 +81,9 @@ void loop() {
       checkserial();
       break;
     case 1:
-      //Breathing
-      for ( int r = 1; r  < 9; r++)  {
-        checkserial();
-        if (changemode == 0) {
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-          for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 12; i++) {
-              leds[i][j] = 1;
-              for (int p = 0; p < 25; p++) {
-              }
-              leds[i][j] = r;
-            }
-          }
-        }
-        else {
-          break;
-        }
-      }
-      for ( int r = 9; r  > 0; r--)  {
-        checkserial();
-        if (changemode == 0) {
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-          for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 12; i++) {
-              leds[i][j] = 1;
-              for (int p = 0; p < 25; p++) {
-              }
-              leds[i][j] = r;
-            }
-          }
-        }
-        else {
-          break;
-        }
-      }
-      for ( int r = 1; r  < 30; r++)  {
-        checkserial();
-        if (changemode == 0) {
-          delayMicroseconds(65000);
-          delayMicroseconds(65000);
-        }
-        else {
-          break;
-        }
-      }
-      break;
-    case 2:
-      //Random
-      leds[random(12)][random(4)] = random(8);
-      delayMicroseconds(10000);
-      checkserial();
-      break;
-    case 3:
-      //Rain
-      rain++;
-      if (rain > rainlimit) {
-        rain = 0;
-        rx = random(12);
-        ry = random(4);
-        if (leds[rx][ry] == 0) {
-          leds[rx][ry] = 18;
-        }
-      }
-      fadecount++;
-      if (fadecount > rainfade) {
-        fadecount = 1;
-        for (int i = 0; i < 12; i++) {
-          for (int j = 0; j < 4; j++) {
-            if (leds[i][j] > 0) {
-              leds[i][j] = leds[i][j] - 1;
-            }
-          }
-        }
-      }
-      checkserial();
-      break;
-    case 4:
       //Reactive
       fadecount++;
       if (fadecount > fadelimit) {
-        fadecount = 1;
-        for (int i = 0; i < 12; i++) {
-          for (int j = 0; j < 4; j++) {
-            if (leds[i][j] > 0) {
-              leds[i][j] = leds[i][j] - 1;
-            }
-          }
-        }
-      }
-      checkserial();
-      break;
-    case 5:
-      //Reactive Target
-      fadecount++;
-      if (fadecount > fadelimitshort) {
         fadecount = 1;
         for (int i = 0; i < 12; i++) {
           for (int j = 0; j < 4; j++) {
@@ -203,7 +106,7 @@ void checkserial() {
   if (Serial1.available() > 0) {
     iByte = Serial1.read();
     if (iByte == 100) {
-      brightness++;
+      brightness+=4;
       if (brightness > 9) {
         brightness = 1;
       }
@@ -212,20 +115,10 @@ void checkserial() {
       mode++;
     }
     if (iByte < 100) {
-      if (mode == 4) {
+      if (mode == 1) {
         byte row = iByte / 16;
         byte col = iByte % 16;
         leds[col][row] = 18;
-      }
-      if (mode == 5) {
-        byte row = iByte / 16;
-        byte col = iByte % 16;
-        for (byte i = 0; i < 12;  i++) {
-          leds[i][row] = 18;
-        }
-        for (byte p = 0; p < 4;  p++) {
-          leds[col][p] = 18;
-        }
       }
     }
   }
@@ -281,15 +174,6 @@ void clearLeds() {
   for (int i = 0; i < 12; i++) {
     for (int j = 0; j < 4; j++) {
       leds[i][j] = 0;
-    }
-  }
-}
-
-void onLeds() {
-  // Clear display array
-  for (int i = 0; i < 12; i++) {
-    for (int j = 0; j < 4; j++) {
-      leds[i][j] = 7;
     }
   }
 }
