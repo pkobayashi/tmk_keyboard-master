@@ -7,15 +7,8 @@ byte leds[12][4];
 byte pass = 1;
 int fadecount = 1;
 const int fadelimit = 3000;
-const int fadelimitshort = 1000;
-byte mode = 1;
-byte brightness = 2;
-boolean changemode = 0;
-int rain = 0;
-const int rainlimit = 5000;
-const int rainfade = 5000;
-byte rx = 0;
-byte ry = 0;
+byte mode = 0;
+byte brightness = 9;
 
 // pin[xx] on led matrix connected to nn on Arduino (-1 is dummy to make array start at pos 1)
 int pins[17] = {
@@ -39,30 +32,38 @@ extern byte leds[12][4];
 void setup() {
   Serial1.begin(9600);
   setupLeds();
-  for (int s = 0; s < 5; s++) {
-    for ( int r = 1; r  < 9; r++)  {
-      delayMicroseconds(65000);
-      delayMicroseconds(65000);
-      for (int j = 0; j < 4; j++) {
-        for (int i = 0; i < 12; i++) {
-          leds[i][j] = 1;
-          for (int p = 0; p < 25; p++) {
-          }
-          leds[i][j] = r;
+
+  fadeIn();
+  fadeOut();
+  fadeIn();
+}
+
+void fadeIn() {
+  for ( int r = 1; r  < 9; r++)  {
+    delayMicroseconds(65000);
+    delayMicroseconds(65000);
+    for (int j = 0; j < 4; j++) {
+      for (int i = 0; i < 12; i++) {
+        leds[i][j] = 1;
+        for (int p = 0; p < 25; p++) {
         }
+        leds[i][j] = r;
       }
     }
-    for ( int r = 9; r  > 0; r--)  {
-      delayMicroseconds(65000);
-      delayMicroseconds(65000);
-      delayMicroseconds(65000);
-      for (int j = 0; j < 4; j++) {
-        for (int i = 0; i < 12; i++) {
-          leds[i][j] = 1;
-          for (int p = 0; p < 25; p++) {
-          }
-          leds[i][j] = r;
+  }
+}
+
+void fadeOut() {
+  for ( int r = 9; r  > 0; r--)  {
+    delayMicroseconds(65000);
+    delayMicroseconds(65000);
+    delayMicroseconds(65000);
+    for (int j = 0; j < 4; j++) {
+      for (int i = 0; i < 12; i++) {
+        leds[i][j] = 1;
+        for (int p = 0; p < 25; p++) {
         }
+        leds[i][j] = r;
       }
     }
   }
@@ -72,7 +73,7 @@ void loop() {
 
   switch (mode) {
     case 0:
-      //Blacklight
+      //Backlight
       for (int i = 0; i < 12; i++) {
         for (int j = 0; j < 4; j++) {
           leds[i][j] = brightness;
@@ -95,24 +96,40 @@ void loop() {
       }
       checkserial();
       break;
-    default:
-      mode = 0;
-      break;
   }
-  changemode = 0;
 }
 
 void checkserial() {
   if (Serial1.available() > 0) {
     iByte = Serial1.read();
     if (iByte == 100) {
-      brightness+=4;
-      if (brightness > 9) {
-        brightness = 1;
+      switch (brightness) {
+        case 1:
+          brightness = 2;
+          break;
+        case 2:
+          brightness = 5;
+          break;
+        case 5:
+          brightness = 9;
+          break;
+        case 9:
+          brightness = 1;
+          break;
       }
     }
     if (iByte == 101) {
-      mode++;
+      switch (mode) {
+        case 0:
+          fadeOut();
+          mode = 1;
+          break;
+        case 1:
+          fadeIn();
+          brightness = 9;
+          mode = 0;
+          break;
+      }
     }
     if (iByte < 100) {
       if (mode == 1) {
