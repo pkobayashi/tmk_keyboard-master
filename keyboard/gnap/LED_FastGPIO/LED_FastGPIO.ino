@@ -70,19 +70,17 @@ void fadeOut() {
 }
 
 void loop() {
-
   switch (mode) {
     case 0:
-      //Backlight
+      // Backlight
       for (int i = 0; i < 12; i++) {
         for (int j = 0; j < 4; j++) {
           leds[i][j] = brightness;
         }
       }
-      checkserial();
       break;
     case 1:
-      //Reactive
+      // Reactive
       fadecount++;
       if (fadecount > fadelimit) {
         fadecount = 1;
@@ -94,9 +92,24 @@ void loop() {
           }
         }
       }
-      checkserial();
+      break;
+    case 2:
+      // Fade
+      fadecount++;
+      if (fadecount > fadelimit) {
+        fadecount = 1;
+        for (int i = 0; i < 12; i++) {
+          for (int j = 0; j < 4; j++) {
+            if (leds[i][j] < 9) {
+              leds[i][j] = leds[i][j] + 1;
+            }
+          }
+        }
+      }
       break;
   }
+
+  checkserial();
 }
 
 void checkserial() {
@@ -118,24 +131,37 @@ void checkserial() {
           break;
       }
     }
+ 
     if (iByte == 101) {
       switch (mode) {
-        case 0:
+        case 0: // backlight
           fadeOut();
-          mode = 1;
+          mode = 1; 
           break;
-        case 1:
+        case 1: // reactive
+          fadeIn();
+          brightness = 9;
+          mode = 2;
+          break;
+        case 2: // fade
+          fadeOut();
           fadeIn();
           brightness = 9;
           mode = 0;
           break;
       }
     }
+    
     if (iByte < 100) {
-      if (mode == 1) {
-        byte row = iByte / 16;
-        byte col = iByte % 16;
-        leds[col][row] = 18;
+      byte row = iByte / 16;
+      byte col = iByte % 16;
+      switch (mode) {
+        case 1: // reactive
+          leds[col][row] = 18;
+          break;
+        case 2:
+          clearLeds();
+          break;
       }
     }
   }
@@ -183,7 +209,6 @@ void setupLeds() {
   clearLeds();
   Timer1.initialize(25);
   Timer1.attachInterrupt(display);
-
 }
 
 void clearLeds() {
@@ -197,7 +222,6 @@ void clearLeds() {
 
 // Interrupt routine
 void display() {
-
   switch (col) { // Turn whole previous column off
     case 0:
       FastGPIO::Pin<6>::setOutputValueLow();
@@ -245,6 +269,7 @@ void display() {
       pass = 1;
     }
   }
+  
   for (int row = 0; row < 4; row++) {
     if (leds[col][row] > pass) {
       switch (row) { // Turn on this led
@@ -279,6 +304,7 @@ void display() {
       }
     }
   }
+  
   switch (col) { // Turn column on
     case 0:
       FastGPIO::Pin<6>::setOutputValueHigh();
@@ -317,11 +343,5 @@ void display() {
       FastGPIO::Pin<21>::setOutputValueHigh();
       break;
   }
-
 }
-
-
-
-
-
 
